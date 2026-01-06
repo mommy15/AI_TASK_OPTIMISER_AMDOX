@@ -165,6 +165,10 @@ streamlit run app.py
   * No other app (Zoom, Teams) using the camera
   * Camera permission enabled
 
+## ⚠ Deployment Note
+> Webcam-based emotion detection works only when running the app locally.
+> Streamlit Cloud does not support direct webcam access due to browser security restrictions.
+
 ---
 
 ##  Data Privacy & Ethics
