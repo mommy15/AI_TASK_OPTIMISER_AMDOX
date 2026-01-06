@@ -92,6 +92,7 @@ AI_TASK_OPTIMISER_AMDOX/
 │   └── mood_logs.csv          # Logged emotion data (CSV)
 │
 ├── requirements.txt           # Project dependencies
+├── runtime.txt
 ├── LICENSE                    # MIT License
 ├── .gitignore
 ```
@@ -165,9 +166,19 @@ streamlit run app.py
   * No other app (Zoom, Teams) using the camera
   * Camera permission enabled
 
-## ⚠ Deployment Note
-> Webcam-based emotion detection works only when running the app locally.
-> Streamlit Cloud does not support direct webcam access due to browser security restrictions.
+##  Deployment
+
+The application is deployed on **Streamlit Cloud** for easy access and demonstration.
+
+**Live App:** <[ai-task-optimiser.streamlit.app](https://ai-task-optimiser.streamlit.app)>
+
+### ⚠ Important Deployment Note
+- Text emotion analysis and live speech emotion detection work fully on Streamlit Cloud.
+- Webcam-based facial emotion detection is **disabled in the cloud environment** due to browser and server security limitations.
+- Video emotion detection works **only when the application is run locally**.
+
+This behavior is expected and handled gracefully in the application.
+
 
 ---
 
