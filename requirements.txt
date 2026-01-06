@@ -4,6 +4,6 @@ textblob
 matplotlib
 speechrecognition
 deepface
-opencv-python
-tf-keras
+opencv-python-headless
 tensorflow
+tf-keras

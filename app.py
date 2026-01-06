@@ -109,57 +109,77 @@ elif MENU == "Speech Emotion":
 
 # VIDEO - Emotion Analysis
 elif MENU == "Video Emotion":
+    import os
+
     st.subheader(" Live Video Emotion Detection")
-    st.info("Start the camera to detect facial emotion in real time")
 
-    run = st.checkbox("Start Camera")
+    # Detect Streamlit Cloud environment
+    IS_CLOUD = os.getenv("STREAMLIT_SERVER_RUNNING") == "1"
 
-    FRAME_WINDOW = st.image([])
-    emotion_display = st.empty()
-
-    if run:
-        cam = cv2.VideoCapture(0)
-        frame_count = 0
-        detected_emotion = "Neutral"
-
-        while run:
-            ret, frame = cam.read()
-            if not ret:
-                st.error(" Unable to access webcam")
-                break
-
-            # Run emotion detection every 15 frames (performance boost)
-            if frame_count % 30 == 0:
-                log_emotion(
-                mode="video",
-                emotion=detected_emotion,
-                confidence=None
-            )
-                detected_emotion = video_emotion(frame)
-
-            frame_count += 1
-
-            # Overlay emotion on frame
-            cv2.putText(
-                frame,
-                detected_emotion,
-                (30, 50),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                1,
-                (0, 255, 0),
-                2
-            )
-
-            FRAME_WINDOW.image(frame, channels="BGR")
-            emotion_display.markdown(f"### Detected Emotion: **{detected_emotion}**")
-
-        cam.release()
-    else:
+    if IS_CLOUD:
         st.warning(
-            "Camera is off"
-             "⚠ Webcam-based emotion detection works only in local execution. "
-             "Streamlit Cloud does not support direct webcam access."
-            )
+            "⚠ Webcam-based emotion detection is disabled on Streamlit Cloud.\n\n"
+            "Please run the application locally to use this feature."
+        )
+
+    else:
+        st.info("Start the camera to detect facial emotion in real time")
+
+        run = st.checkbox("Start Camera")
+
+        FRAME_WINDOW = st.image([])
+        emotion_display = st.empty()
+
+        if run:
+            cam = cv2.VideoCapture(0)
+            frame_count = 0
+            detected_emotion = "Neutral"
+            last_logged_emotion = None
+
+            while run:
+                ret, frame = cam.read()
+                if not ret:
+                    st.error(" Unable to access webcam")
+                    break
+
+                # Run emotion detection every 30 frames
+                if frame_count % 30 == 0:
+                    new_emotion = video_emotion(frame)
+
+                    # Log only if emotion changes
+                    if new_emotion != last_logged_emotion:
+                        log_emotion(
+                            mode="video",
+                            emotion=new_emotion,
+                            confidence=None
+                        )
+                        last_logged_emotion = new_emotion
+
+                    detected_emotion = new_emotion
+
+                frame_count += 1
+
+                # Overlay emotion on frame
+                cv2.putText(
+                    frame,
+                    detected_emotion,
+                    (30, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    1,
+                    (0, 255, 0),
+                    2
+                )
+
+                FRAME_WINDOW.image(frame, channels="BGR")
+                emotion_display.markdown(
+                    f"### Detected Emotion: **{detected_emotion}**"
+                )
+
+            cam.release()
+
+        else:
+            st.warning("Camera is currently off")
+
 
 
 #  ANALYTICS - Emotion Logs
