@@ -223,7 +223,6 @@ GitHub: [https://github.com/mommy15](https://github.com/mommy15)
 * TextBlob
 * SpeechRecognition
 * DeepFace
-* OpenCV
 * TensorFlow
 
 ---

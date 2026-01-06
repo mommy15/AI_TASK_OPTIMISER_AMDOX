@@ -7,7 +7,7 @@ import os
 
 from emotion_speech_live import live_speech_emotion
 from emotion_text import text_emotion
-from emotion_video import video_emotion
+# from emotion_video import video_emotion
 from task_logic import recommend_tasks, stress_alert
 
 st.set_page_config(page_title="AI Task Optimizer", layout="wide")
@@ -57,7 +57,7 @@ if MENU == "Text Emotion":
         mode="text",
         emotion=emotion,
         confidence=round(score, 2)
-    )
+        )
         tasks = recommend_tasks(emotion)
         st.write("### Recommended Tasks")
         for t in tasks:
@@ -123,6 +123,7 @@ elif MENU == "Video Emotion":
 
     else:
         import cv2
+        from emotion_video import video_emotion
         st.info("Start the camera to detect facial emotion in real time")
 
         run = st.checkbox("Start Camera")
@@ -184,7 +185,11 @@ elif MENU == "Video Emotion":
 
 #  ANALYTICS - Emotion Logs
 elif MENU == "Analytics":
-    df = pd.read_csv(DATA_FILE)
-    st.write("Logged Records:", len(df))
-    st.dataframe(df)
+    if os.path.exists(DATA_FILE):
+        df = pd.read_csv(DATA_FILE)
+        st.write("Logged Records:", len(df))
+        st.dataframe(df)
+    else:
+        st.info("No emotion data logged yet.")
+
 
