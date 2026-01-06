@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import uuid
 from datetime import datetime
-import cv2
 import os
 
 
@@ -123,6 +122,7 @@ elif MENU == "Video Emotion":
         )
 
     else:
+        import cv2
         st.info("Start the camera to detect facial emotion in real time")
 
         run = st.checkbox("Start Camera")
