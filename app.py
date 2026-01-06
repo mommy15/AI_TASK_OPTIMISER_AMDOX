@@ -155,7 +155,11 @@ elif MENU == "Video Emotion":
 
         cam.release()
     else:
-        st.warning("Camera is off")
+        st.warning(
+            "Camera is off"
+             "⚠ Webcam-based emotion detection works only in local execution. "
+             "Streamlit Cloud does not support direct webcam access."
+            )
 
 
 #  ANALYTICS - Emotion Logs
